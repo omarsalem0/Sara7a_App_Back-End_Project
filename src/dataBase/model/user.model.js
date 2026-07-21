@@ -12,7 +12,9 @@ const userSckema = new Schema ({
     },
     password:{
         type:String,
-        required:true
+        required:function(){
+            return this.provider==='system'
+        }
     },
     coverImage:{
         type:String
@@ -22,14 +24,25 @@ const userSckema = new Schema ({
     },
     uniqueAccessName:{
         type:String,
-        required:true,
-        unique:true
+        unique:true,
+        required:function(){
+        return this.provider==='system'
+        }
     },
     role:{
         type:Number,
         default:0
+    },
+    isverify:{
+        type:Boolean,
+        default:false
+    },
+    provider:{
+        type:String,
+        enum:['google','system'],
+        default:'system'
     }
 
 })
 
-export const userModel= model('user',userSckema)
+export const userModel= model('User',userSckema)

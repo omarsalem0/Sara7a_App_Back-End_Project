@@ -8,6 +8,7 @@ export const erorrResponce =({
  throw new Error (message,{cause:{status,extra}})
 }
 
+
 export const badRequestException=({message='Bad request',extra=undefined}={})=>{
     return erorrResponce({message,extra,status:400})
 }
@@ -30,7 +31,8 @@ export const globalHandelError=(err,req,res,next)=>{
     const status = err.status? err.status :err.cause? err.cause.status :500
     res.status(status).json({
         stack: mood? err.stack :null,
-        message: mood? displayMessage :deafultMessage
+        message: mood? displayMessage :deafultMessage,
+        extra:mood? err.cause :null
     })
 
 }

@@ -2,8 +2,8 @@ import jwt from "jsonwebtoken"
 import { env } from "../../../../config/env.service.js"
 
 export const auth =async(req,rse,next)=>{
-    let {authoriztion}=req.headers
-    let [flag,token] = authoriztion.split(" ")
+    let {authorization}=req.headers    
+    let [flag,token] = authorization.split(" ")
     switch (flag) {
         case "Bearer":
             let decodeData =await jwt.decode(token)
@@ -17,8 +17,10 @@ export const auth =async(req,rse,next)=>{
                 default:
                     break;
             }
-            let decoded =await jwt(token,signature)
+            let decoded =await jwt.verify(token,signature)
             req.user=decoded.userId
+            req.decoded=decoded
+            req.token=token
             next()
             break;
     
