@@ -27,8 +27,8 @@ export const singup =async(data)=>{
     })
     await sendEmail({
         to:email,
-        subject:'verfiy your account',
-        html:`the otp is ${otp}`
+        subject:'<h1> verfiy your account </h1>',
+        html:`<h2>the otp is ${otp}</h2>`
     })
     return addedUser
 
@@ -111,11 +111,13 @@ export const getAccessToken =async(authorization,host)=>{
     return accessToken
 }
 export const logOut =async(req)=>{
-    let redisKey=await creatRevokToken({userID:req.userID,token:req.token})
+    let redisKey=await creatRevokToken({userID:req.user,token:req.token})
     await set({
         key:redisKey,
         value:1,
         ttl:req.decoded.iat+ 30*60
     })
+    console.log(redisKey);
+    
     return {message:'logout successful'}
 }
