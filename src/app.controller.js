@@ -9,6 +9,7 @@ import path from "path"
 import { fileURLToPath } from "url"
 import { redisConnection } from "./dataBase/redis.js"
 import cors from "cors"
+import { Limiter } from "./common/middleware/rateLimit/login.limiter.js"
 export const bootStarp =async()=>{
     const app =express()
     app.use(express.json())
@@ -21,6 +22,7 @@ export const bootStarp =async()=>{
     let __dirname =path.dirname(__filename)
     console.log(__filename,__dirname);
     console.log(path.join(__dirname,'../uploads'));
+    app.use(Limiter)
     app.use('/auth',authRouter)
     app.use('/user',userRouter)
     app.use('/message',messageRouter)
