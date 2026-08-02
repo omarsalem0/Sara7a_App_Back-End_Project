@@ -4,6 +4,7 @@ import { getAccessToken, login, logOut, singup, singupMail, verifyAccount } from
 import { auth } from "../../common/middleware/auth/token.js";
 import { validation } from "../../common/middleware/validation.js";
 import { loginSckema, singupSckema } from "./auth.validation.js";
+import { loginLimiter } from "../../common/middleware/rateLimit/login.limiter.js";
 const router=Router()
 
 router.post('/singup',validation(singupSckema),async(req,res)=>{
@@ -20,7 +21,7 @@ router.post('/verify-account',async(req,res)=>{
    let verfiyUser =await verifyAccount(req.body)
    successResponce({res,message:'verify Account',data:verfiyUser})
 })
-router.post('/login',validation(loginSckema),async(req,res)=>{
+router.post('/login',loginLimiter,validation(loginSckema),async(req,res)=>{
    let loginUser = await login(req.body,req.get("host"))
    successResponce({res,message:'user login successfuly',data:loginUser,status:200})
 })
