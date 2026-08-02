@@ -10,3 +10,14 @@ import rateLimit from "express-rate-limit";
     legacyHeaders:false,
 
 })
+
+ export const Limiter =rateLimit({
+    windowMs:15*60*1000,
+    limit:100,
+    message:{   
+       message: "Too many requests. Please try again after 15 minutes."
+},
+    standardHeaders:'draft-8',
+    legacyHeaders:false,
+
+})
